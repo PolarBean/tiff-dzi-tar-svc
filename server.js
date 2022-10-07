@@ -6,7 +6,7 @@ const path = require('path');
 
 const app = express();
 
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8020,
     ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 // let users provide bucketurl as a parameter
 app.get('/bucketurl', (req, res) => {
@@ -107,7 +107,7 @@ function iterate_over_bucket_files(url) {
 
 
 
-iterate_over_bucket_files("https://data-proxy.ebrains.eu/api/v1/public/buckets/space-for-testing-the-nutil-web-applicat?prefix=hbp_00138_ingestion_test/");
+// iterate_over_bucket_files("https://data-proxy.ebrains.eu/api/v1/public/buckets/space-for-testing-the-nutil-web-applicat?prefix=hbp_00138_ingestion_test/");
 // copy file from bucket
 
 // convert file to DZI format
