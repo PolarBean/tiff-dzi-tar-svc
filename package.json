@@ -1,0 +1,12 @@
+{
+  "name": "dzi-tar-svc",
+  "version": "1.0.0",
+  "description": "a tool for taking data proxy tiffs and turning them into tiffed dzi's",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "harry carey",
+  "license": "ISC"
+}
