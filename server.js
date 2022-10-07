@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // to convert image to dzi
 function image_to_dzi(image) {
     console.log('image', image)
-    var cmd = 'java -jar pyramidio/pyramidio-cli-1.1.4.jar -i ' + image + ' -icr 0.1 -tf jpg  -o . & ';
+    var cmd = '/opt/app-root/src/miniconda3/bin/java -jar pyramidio/pyramidio-cli-1.1.4.jar -i ' + image + ' -icr 0.1 -tf jpg  -o . & ';
     console.log(cmd)
     promise = exec(cmd, function (error, stdout, stderr) {
         console.log(error);
