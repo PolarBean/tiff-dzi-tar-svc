@@ -2,7 +2,10 @@ var fs = require('fs');
 var exec = require('child_process').execSync;
 // use express
 var express = require('express');
+const path = require('path');
+
 const app = express();
+
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 // let users provide bucketurl as a parameter
