@@ -1,5 +1,6 @@
 var fs = require('fs');
 var exec = require('child_process').execSync;
+var fetch = require('node-fetch');
 // use express
 var express = require('express');
 const path = require('path');
