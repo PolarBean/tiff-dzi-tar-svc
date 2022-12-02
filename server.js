@@ -127,7 +127,7 @@ function get_token() {
     var url = new URL(current_url);
     var code = url.searchParams.get("code");
 
-
+    console.log('code', code)
     var headers = {
         "grant_type": "authorization_code",
         "client_id": "ImageIngestion",
