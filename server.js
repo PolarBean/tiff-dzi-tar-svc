@@ -4,6 +4,8 @@ var fetch = require('node-fetch');
 // use express
 var express = require('express');
 const path = require('path');
+const request = require('request');
+
 
 const app = express();
 
@@ -18,6 +20,16 @@ app.get('/bucketurl/', (req, res) => {
     res.send('done');
 }
 );
+// serve index.html
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+app.get('/app', function (req, res) {
+    get_token();
+    res.sendFile(path.join(__dirname + '/logged_in.html'));
+});
+
 app.listen(port, ip, () => {
     console.log(`test Example app listening at http://localhost:${port}`)
 }
@@ -107,16 +119,35 @@ function iterate_over_bucket_files(url) {
         });
 }
 
+function get_token() {
+    var target_url = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/auth";
+    var current_url = window.location.href;
+
+    // get code from url parameter
+    var url = new URL(current_url);
+    var code = url.searchParams.get("code");
 
 
-// iterate_over_bucket_files("https://data-proxy.ebrains.eu/api/v1/public/buckets/space-for-testing-the-nutil-web-applicat?prefix=hbp_00138_ingestion_test/");
-// copy file from bucket
+    var headers = {
+        "grant_type": "authorization_code",
+        "client_id": "ImageIngestion",
+        "code": code,
+        // insert environment variable called clienat secret
+        "client_secret": process.env.CLIENT_SECRET
+    };
 
-// convert file to DZI format
-// image_to_dzi('hbp-00138_122_381_423_s001.tif')
-// convert DZI to tar
+    var options = {
+        "method": "GET",
+        "url": target_url,
+        "headers": headers
+    };
+    // log request as url
 
-// index tar
 
-// upload tar and index to bucket
+    // make POST request to get token
+    request(options, function (error, response) {
+        if (error) throw new Error(error);
+        console.log(response.body);
+    });
+}
 
