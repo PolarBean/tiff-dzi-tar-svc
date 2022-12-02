@@ -26,7 +26,8 @@ app.get('/', function (req, res) {
 });
 
 app.get('/app', function (req, res) {
-    get_token();
+    var code = req.query.code;
+    get_token(code);
     res.sendFile(path.join(__dirname + '/logged_in.html'));
 });
 
@@ -119,13 +120,9 @@ function iterate_over_bucket_files(url) {
         });
 }
 
-function get_token() {
+function get_token(code) {
     var target_url = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/auth";
-    var current_url = window.location.href;
 
-    // get code from url parameter
-    var url = new URL(current_url);
-    var code = url.searchParams.get("code");
 
     console.log('code', code)
     var headers = {
