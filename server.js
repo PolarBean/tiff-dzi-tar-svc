@@ -8,7 +8,7 @@ const request = require('request');
 axios = require('axios');
 
 const app = express();
-
+var token = null;
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 // let users provide bucketurl as a parameter
@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 
 app.get('/app', function (req, res) {
     var code = req.query.code;
-    get_token(code, res);
+    token = get_token(code, res);
     // res.sendFile(path.join(__dirname + '/logged_in.html'));
 });
 
@@ -35,7 +35,7 @@ app.get('/listBucket', function (req, res) {
     var bucket_url = req.query.bucketurl;
     list_bucket_files(bucket_url, res);
     });
-    
+
 app.listen(port, ip, () => {
     console.log(`test Example app listening at http://localhost:${port}`)
 }
