@@ -1,5 +1,12 @@
 <h1>Logged In from function</h1>
 <button onclick="list_bucket_files()">List Bucket Files</button>
+<!-- create a filepicker ui -->
+
+<!-- create a div to display the files -->
+<div id="files">
+  <!-- display a list of files -->
+</div>
+
 <script>
   function list_bucket_files() {
     // call /listBucket
@@ -7,6 +14,14 @@
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        // display the files
+        let files = document.getElementById("files");
+        files.innerHTML = "";
+        for (let i = 0; i < data.length; i++) {
+          let file = data[i];
+
+          files.innerHTML += `<div>${file}</div>`;
+        }
       });
   }
 </script>
