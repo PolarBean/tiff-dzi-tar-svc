@@ -32,8 +32,8 @@ app.get('/app', function (req, res) {
 });
 
 app.get('/listBucket', function (req, res) {
-    var bucket_url = req.query.bucketurl;
-    list_bucket_files(bucket_url, res);
+    // var bucket_url = req.query.bucketurl;
+    list_bucket_files(res);
     });
 
 app.listen(port, ip, () => {
@@ -83,10 +83,6 @@ function curl_and_save(url, file) {
     return promise;
 }
 
-// function which posts tar to bucket
-// function post_tar_to_bucket(tar) {
-//     var exec = require('child_process').exec;
-//     var cmd = 'curl -X POST -H "Content-Type: application/x-tar" -H "authorization: Bearer ' + token + ;
 
 function iterate_over_bucket_files(url) {
 
@@ -125,8 +121,20 @@ function iterate_over_bucket_files(url) {
 
 
 // function which lists all files in bucket
-function list_bucket_files(bucket_url) {
-    console.log(token);
+function list_bucket_files(res) {
+    requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/space-for-testing-the-nutil-web-applicat?limit=50";
+    axios.get(requestURl, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        console.log(response.data);
+        res.send(response.data);
+    }).catch(function (error) {
+        console.log(error);
+    });
+    
 }
 
 
@@ -146,7 +154,6 @@ function get_token(code, res) {
         
     });
   
-
     // make POST request to get token
     axios({
         method: 'post',
@@ -155,6 +162,7 @@ function get_token(code, res) {
         config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
     }).then(response => {
         console.log(response.data)
+        // here i update the global variable token
         token = response.data['access_token'];
         // direct user to logged_in.html 
         res.sendFile(path.join(__dirname + '/logged_in.html'));
