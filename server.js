@@ -35,6 +35,11 @@ app.get('/listBucket', function (req, res) {
     // var bucket_url = req.query.bucketurl;
     list_bucket_files(res);
     });
+app.get('/tiffToTarDZI', function (req, res) {
+    var bucket_name = req.query.bucketname;
+    var file_name = req.query.filename;
+    convert_tiff_to_tarDZI(bucket_name, file_name);
+    res.send('done');
 
 app.listen(port, ip, () => {
     console.log(`test Example app listening at http://localhost:${port}`)
@@ -73,7 +78,9 @@ function curl_and_save(url, file) {
     // split url to get filename
     console.log(url)
     console.log(file)
-    var cmd = 'curl -L ' + url + ' > ' + file;
+    var cmd = "curl -L ' + url + '\
+    -H 'accept: application/json'\
+    -H 'Authorization: Bearer " + token + "' > " + file;
     console.log(cmd)
     promise = exec(cmd, function (error, stdout, stderr) {
         console.log(stdout);
@@ -83,11 +90,23 @@ function curl_and_save(url, file) {
     return promise;
 }
 
+function convert_tiff_to_tarDZI(bucketname, file_name) {
+    var requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucketname + '/'  + file_name + "?inline=false&redirect=true";
+    // download tiff file at url
+    curl_and_save(requestURl, file_name, token = token)
+    // convert image to dzi
+    image_to_dzi(file_name)
+    // convert dzi to tar
+    dzi_folder = file_name.split('.')[0] + '_files';    
+    dzi_to_tar(dzi_folder);
+}
 
-function iterate_over_bucket_files(url) {
+    
 
+function iterate_over_bucket_files(bucketname, folder_name) {
+        var requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucketname + '/'  + folder_name + "?inline=false&redirect=true";
         // fetch list of files from bucket
-        var folder_url = url.split('?')[0];
+        
         fetch(url)
             .then((resp) => resp.json())
             .then(function (data) {
@@ -121,8 +140,8 @@ function iterate_over_bucket_files(url) {
 
 
 // function which lists all files in bucket
-function list_bucket_files(res) {
-    requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/space-for-testing-the-nutil-web-applicat?limit=50";
+function list_bucket_files(res, bucketname) {
+    requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucketname + "?limit=1000&delimiter=/";
     axios.get(requestURl, {
         headers: {
             'Authorization': 'Bearer ' + token,
