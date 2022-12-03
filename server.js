@@ -5,7 +5,7 @@ var fetch = require('node-fetch');
 var express = require('express');
 const path = require('path');
 const request = require('request');
-
+axios = require('axios');
 
 const app = express();
 
@@ -84,49 +84,41 @@ function curl_and_save(url, file) {
 //     var cmd = 'curl -X POST -H "Content-Type: application/x-tar" -H "authorization: Bearer ' + token + ;
 
 function iterate_over_bucket_files(url) {
-    // fetch list of files from bucket
-    var folder_url = url.split('?')[0];
-    fetch(url)
-        .then((resp) => resp.json())
-        .then(function (data) {
-            // get keys from data
-            data = data['objects'];
-            for (var i = 0; i < data.length; i++) {
-                var name = data[i]['name'];
-                var file_url = folder_url + '/' + name;
-                console.log(file_url)
-                // download file
-                split_name = name.split('/');
-                var file_name = split_name[split_name.length - 1];
-                console.log(file_name)
-                curl_and_save(file_url, file_name)
-                // convert image to dzi
-                image_to_dzi(file_name)
-                // convert dzi to tar
-                dzi_folder = file_name.split('.')[0] + '_files';
-                dzi_to_tar(dzi_folder);
 
-            }
-        })
-        // iterate over files where data.length is not defined
+        // fetch list of files from bucket
+        var folder_url = url.split('?')[0];
+        fetch(url)
+            .then((resp) => resp.json())
+            .then(function (data) {
+                // get keys from data
+                data = data['objects'];
+                    for (var i = 0; i < data.length; i++) {
+                        var name = data[i]['name'];
+                        var file_url = folder_url + '/' + name;
+                        console.log(file_url)
+                        // download file
+                        split_name = name.split('/');
+                        var file_name = split_name[split_name.length - 1];
+                        console.log(file_name)
+                        curl_and_save(file_url, file_name)
+                        // convert image to dzi
+                        image_to_dzi(file_name)
+                        // convert dzi to tar
+                        dzi_folder = file_name.split('.')[0] + '_files';
+                        dzi_to_tar(dzi_folder);
+                    }
+                }).catch(function (error) {
+                console.log(error);
+            });
+        
 
-        // construct link to file by first removing all url parameters
-        // then add file name
-        // file_url += file;
-        // curl_and_save(file_url);
-
-        .catch(function (error) {
-            console.log(error);
-        });
-}
+    }
 
 
 
 
 
-const { response } = require('express');
-const fetch = require('node-fetch');
-axios = require('axios');
+
 
 
 
