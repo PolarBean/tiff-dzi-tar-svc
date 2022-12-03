@@ -120,30 +120,46 @@ function iterate_over_bucket_files(url) {
         });
 }
 
+
+
+
+
+const { response } = require('express');
+const fetch = require('node-fetch');
+axios = require('axios');
+
+
+
+
+
+
+
 function get_token(code) {
     var target_url = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/token";
 
-
-    console.log('code', code)
-    var headers = {
-        "grant_type": "authorization_code",
-        "client_id": "ImageIngestion",
-        "code": code,
-        // insert environment variable called clienat secret
-        "client_secret": process.env.CLIENT_SECRET
-    };
-
-    var options = {
-        "url": target_url,
-        "headers": headers
-    };
-    // log request as url
-
+    const params = new URLSearchParams({
+        'grant_type': 'authorization_code',
+        'client_id': 'ImageIngestion',
+        'code': code,
+        'client_secret': process.env.CLIENT_SECRET,
+        'redirect_uri': 'https://tif-dzi-tar-svc-test.apps.hbp.eu/app'
+        
+    });
+  
 
     // make POST request to get token
-    request(options, function (error, response) {
-        if (error) throw new Error(error);
-        console.log(response.body);
-    })
+    axios({
+        method: 'post',
+        url: url,
+        data: params.toString(),
+        config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
+    }).then(response => {
+        console.log(response.data)
+        var token = response.data['access_token'];
+        return token;
+    }).catch(error => {
+        console.log(error)
+    });
+    
 }
 
