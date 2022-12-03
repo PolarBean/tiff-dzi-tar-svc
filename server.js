@@ -33,7 +33,7 @@ app.get('/app', function (req, res) {
 });
 
 app.get('/listBucket', function (req, res) {
-    var bucket_name = req.query.bucket_name;
+    var bucket_name = req.query.bucketName;
     list_bucket_files(res, bucket_name);
     });
 app.get('/tiffToTarDZI', function (req, res) {
