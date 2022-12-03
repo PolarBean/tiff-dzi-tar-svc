@@ -31,6 +31,11 @@ app.get('/app', function (req, res) {
     // res.sendFile(path.join(__dirname + '/logged_in.html'));
 });
 
+app.get('/listBucket', function (req, res) {
+    var bucket_url = req.query.bucketurl;
+    list_bucket_files(bucket_url, res);
+    });
+    
 app.listen(port, ip, () => {
     console.log(`test Example app listening at http://localhost:${port}`)
 }
@@ -119,7 +124,10 @@ function iterate_over_bucket_files(url) {
 
 
 
-
+// function which lists all files in bucket
+function list_bucket_files(bucket_url) {
+    console.log(token);
+}
 
 
 
@@ -148,8 +156,8 @@ function get_token(code, res) {
     }).then(response => {
         console.log(response.data)
         var token = response.data['access_token'];
-        // direct user to logged_in.html with token
-        res.sendFile(path.join(__dirname + '/logged_in.html?token=' + token));
+        // direct user to logged_in.html 
+        res.sendFile(path.join(__dirname + '/logged_in.html'));
         return token;
     }).catch(error => {
         console.log(error)

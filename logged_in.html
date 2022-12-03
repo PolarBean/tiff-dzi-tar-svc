@@ -1,1 +1,12 @@
 <h1>Logged In from function</h1>
+<button onclick="list_bucket_files()">List Bucket Files</button>
+<script>
+  function list_bucket_files() {
+    // call /listBucket
+    fetch("/listBucket")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  }
+</script>
