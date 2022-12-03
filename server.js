@@ -80,7 +80,7 @@ function curl_and_save(url, file) {
     // split url to get filename
     console.log(url)
     console.log(file)
-    var cmd = "curl -L ' + url + '\
+    var cmd = "curl -L " + url + "\
     -H 'accept: application/json'\
     -H 'Authorization: Bearer " + token + "' > " + file;
     console.log(cmd)
