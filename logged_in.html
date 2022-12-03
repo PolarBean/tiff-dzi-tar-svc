@@ -39,20 +39,12 @@
     let bucketName = document.getElementById("bucketName").value;
     // get the selected file
     let selectedFile = document.getElementById("selectedFile").value;
+    let url =
+      "/tiffToTarDZI?bucketName=" +
+      bucketName +
+      "&selectedFile=" +
+      selectedFile;
     // call /convertTiffToDzi
-    fetch("/tiffToTarDZI", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        bucketName: bucketName,
-        selectedFile: selectedFile,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
+    fetch(url);
   }
 </script>
