@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 
 app.get('/app', function (req, res) {
     var code = req.query.code;
-    get_token(code);
+    // get_token(code);
     res.sendFile(path.join(__dirname + '/logged_in.html'));
 });
 
