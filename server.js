@@ -38,7 +38,7 @@ app.get('/listBucket', function (req, res) {
     });
 app.get('/tiffToTarDZI', function (req, res) {
     var bucket_name = req.query.bucketname;
-    var file_name = req.query.filename;
+    var file_name = req.query.selectedFile;
     convert_tiff_to_tarDZI(bucket_name, file_name);
     res.send('done');
 });
