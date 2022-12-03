@@ -121,7 +121,7 @@ function iterate_over_bucket_files(url) {
 }
 
 function get_token(code) {
-    var target_url = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/auth";
+    var target_url = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/token";
 
 
     console.log('code', code)
