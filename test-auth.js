@@ -2,7 +2,7 @@
 // get node fetch
 const { response } = require('express');
 const fetch = require('node-fetch');
-axios = require('axios');
+var axios = require('axios');
 var code = "6678cff7-470d-457d-a6d6-6abf3bf6f125.63381ff8-447e-43b4-ab8d-ba7c2164ca80.ImageIngestion" 
 const params = new URLSearchParams({
     'grant_type': 'authorization_code',
@@ -15,7 +15,7 @@ const params = new URLSearchParams({
 
 var url = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/token";
 
-var token = axios({
+axios({
     method: 'post',
     url: url,
     data: params.toString(),
@@ -28,4 +28,3 @@ var token = axios({
     console.log(error)
 });
 
-console.log(token)
