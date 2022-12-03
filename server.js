@@ -142,7 +142,7 @@ function get_token(code) {
     // make POST request to get token
     axios({
         method: 'post',
-        url: url,
+        url: target_url,
         data: params.toString(),
         config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
     }).then(response => {
