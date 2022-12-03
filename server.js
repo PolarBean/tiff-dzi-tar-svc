@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 
 app.get('/app', function (req, res) {
     var code = req.query.code;
-    token = get_token(code, res);
+    get_token(code, res);
     // res.sendFile(path.join(__dirname + '/logged_in.html'));
 });
 
@@ -155,7 +155,7 @@ function get_token(code, res) {
         config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
     }).then(response => {
         console.log(response.data)
-        var token = response.data['access_token'];
+        token = response.data['access_token'];
         // direct user to logged_in.html 
         res.sendFile(path.join(__dirname + '/logged_in.html'));
         return token;
