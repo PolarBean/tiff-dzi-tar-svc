@@ -28,7 +28,7 @@ app.get('/', function (req, res) {
 app.get('/app', function (req, res) {
     var code = req.query.code;
     get_token(code);
-    res.sendFile(path.join(__dirname + '/logged_in.html'));
+    // res.sendFile(path.join(__dirname + '/logged_in.html'));
 });
 
 app.listen(port, ip, () => {
@@ -148,6 +148,8 @@ function get_token(code) {
     }).then(response => {
         console.log(response.data)
         var token = response.data['access_token'];
+        // direct user to logged_in.html
+        res.sendFile(path.join(__dirname + '/logged_in.html'));
         return token;
     }).catch(error => {
         console.log(error)
