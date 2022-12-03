@@ -134,7 +134,6 @@ function get_token(code) {
     };
 
     var options = {
-        "method": "GET",
         "url": target_url,
         "headers": headers
     };
