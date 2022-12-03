@@ -148,8 +148,8 @@ function get_token(code) {
     }).then(response => {
         console.log(response.data)
         var token = response.data['access_token'];
-        // direct user to logged_in.html
-        res.sendFile(path.join(__dirname + '/logged_in.html'));
+        // direct user to logged_in.html with token
+        res.sendFile(path.join(__dirname + '/logged_in.html?token=' + token));
         return token;
     }).catch(error => {
         console.log(error)
