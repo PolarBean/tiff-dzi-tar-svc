@@ -34,7 +34,7 @@ app.get('/app', function (req, res) {
 
 app.get('/listBucket', function (req, res) {
     var bucket_name = req.query.bucket_name;
-    list_bucket_files(bucket_name);
+    list_bucket_files(res, bucket_name);
     });
 app.get('/tiffToTarDZI', function (req, res) {
     var bucket_name = req.query.bucketname;
@@ -143,7 +143,7 @@ function iterate_over_bucket_files(bucketname, folder_name) {
 
 // function which lists all files in bucket
 function list_bucket_files(res, bucketname) {
-    requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucketname + "?limit=1000&delimiter=/";
+    requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucketname + "?limit=50&delimiter=/";
     axios.get(requestURl, {
         headers: {
             'Authorization': 'Bearer ' + token,
