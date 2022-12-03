@@ -20,6 +20,7 @@ app.get('/bucketurl/', (req, res) => {
     res.send('done');
 }
 );
+
 // serve index.html
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
@@ -40,6 +41,7 @@ app.get('/tiffToTarDZI', function (req, res) {
     var file_name = req.query.filename;
     convert_tiff_to_tarDZI(bucket_name, file_name);
     res.send('done');
+});
 
 app.listen(port, ip, () => {
     console.log(`test Example app listening at http://localhost:${port}`)
@@ -161,6 +163,7 @@ function list_bucket_files(res, bucketname) {
 
 
 
+
 function get_token(code, res) {
     var target_url = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/token";
 
@@ -190,5 +193,6 @@ function get_token(code, res) {
         console.log(error)
     });
     
-}
+    }
+
 
