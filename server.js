@@ -5,11 +5,10 @@ var fetch = require('node-fetch');
 var express = require('express');
 const path = require('path');
 const request = require('request');
-const { default: axios } = require('axios');
 axios = require('axios');
 
-
-const app = express();
+const app = require("https-localhost")()
+// const app = express();
 var token = null;
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
@@ -25,7 +24,9 @@ app.get('/bucketurl/', (req, res) => {
 
 // serve index.html
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+    // redirect to localhost:8080 on the browser
+    res.redirect('https://localhost:8080');
+    // res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get('/app', function (req, res) {
@@ -87,7 +88,8 @@ function curl_and_save(bucket_name, file_name) {
         headers: {
             'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
-        }).then(function (response) {
+        }
+    }).then(function (response) {
             console.log(response.data);
         });
 
@@ -102,9 +104,8 @@ function curl_and_save(bucket_name, file_name) {
 }
 
 function convert_tiff_to_tarDZI(bucketname, file_name) {
-    var requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucketname + '/'  + file_name + "?inline=false&redirect=true";
     // download tiff file at url
-    curl_and_save(requestURl, file_name, token = token)
+    curl_and_save(bucket_name, file_name)
     // convert image to dzi
     image_to_dzi(file_name)
     // convert dzi to tar
