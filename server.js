@@ -5,7 +5,9 @@ var fetch = require('node-fetch');
 var express = require('express');
 const path = require('path');
 const request = require('request');
+const { default: axios } = require('axios');
 axios = require('axios');
+
 
 const app = express();
 var token = null;
@@ -76,18 +78,27 @@ function dzi_to_tar(dzi_folder) {
     return promise;
 }
 
-function curl_and_save(url, file) {
+function curl_and_save(bucket_name, file_name) {
     // split url to get filename
     console.log(url)
     console.log(file)
-    var cmd = "curl -X 'GET' " + url + " -H 'accept: application/json' -H 'Authorization: Bearer " + token + "'";
-    console.log(cmd);
-    promise = exec(cmd, function (error, stdout, stderr) {
-        console.log(stdout);
-        console.log(error);
-        console.log(stderr);
-    });
-    return promise;
+    requestURL = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucket_name + '/' + file_name + "?inline=false&redirect=false"
+    axios.get(requestURL, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        }).then(function (response) {
+            console.log(response.data);
+        });
+
+    // var cmd = "curl -X 'GET' " + url + " -H 'accept: application/json' -H 'Authorization: Bearer " + token + "'";
+    // console.log(cmd);
+    // promise = exec(cmd, function (error, stdout, stderr) {
+    //     console.log(stdout);
+    //     console.log(error);
+    //     console.log(stderr);
+    // });
+    // return promise;
 }
 
 function convert_tiff_to_tarDZI(bucketname, file_name) {
