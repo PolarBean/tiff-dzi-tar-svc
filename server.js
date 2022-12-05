@@ -24,12 +24,13 @@ app.get('/bucketurl/', (req, res) => {
 // serve index.html
 app.get('/', function (req, res) {
     // redirect to localhost:8080 on the browser
-    res.redirect('https://localhost:8080');
-    // res.sendFile(path.join(__dirname + '/index.html'));
+
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get('/app', function (req, res) {
     var code = req.query.code;
+    res.redirect('https://localhost:5500/app?code=' + code);
     get_token(code, res);
     // res.sendFile(path.join(__dirname + '/logged_in.html'));
 });
@@ -37,7 +38,7 @@ app.get('/app', function (req, res) {
 app.get('/listBucket', function (req, res) {
     var bucket_name = req.query.bucketName;
     list_bucket_files(res, bucket_name);
-    });
+});
 app.get('/tiffToTarDZI', function (req, res) {
     var bucket_name = req.query.bucketname;
     var file_name = req.query.selectedFile;
@@ -89,8 +90,8 @@ function curl_and_save(bucket_name, file_name) {
             'Content-Type': 'application/json'
         }
     }).then(function (response) {
-            console.log(response.data);
-        });
+        console.log(response.data);
+    });
 
     // var cmd = "curl -X 'GET' " + url + " -H 'accept: application/json' -H 'Authorization: Bearer " + token + "'";
     // console.log(cmd);
@@ -108,42 +109,42 @@ function convert_tiff_to_tarDZI(bucketname, file_name) {
     // convert image to dzi
     image_to_dzi(file_name)
     // convert dzi to tar
-    dzi_folder = file_name.split('.')[0] + '_files';    
+    dzi_folder = file_name.split('.')[0] + '_files';
     dzi_to_tar(dzi_folder);
 }
 
-    
+
 
 function iterate_over_bucket_files(bucketname, folder_name) {
-        var requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucketname + '/'  + folder_name + "?inline=false&redirect=true";
-        // fetch list of files from bucket
-        
-        fetch(url)
-            .then((resp) => resp.json())
-            .then(function (data) {
-                // get keys from data
-                data = data['objects'];
-                    for (var i = 0; i < data.length; i++) {
-                        var name = data[i]['name'];
-                        var file_url = folder_url + '/' + name;
-                        console.log(file_url)
-                        // download file
-                        split_name = name.split('/');
-                        var file_name = split_name[split_name.length - 1];
-                        console.log(file_name)
-                        curl_and_save(file_url, file_name)
-                        // convert image to dzi
-                        image_to_dzi(file_name)
-                        // convert dzi to tar
-                        dzi_folder = file_name.split('.')[0] + '_files';
-                        dzi_to_tar(dzi_folder);
-                    }
-                }).catch(function (error) {
-                console.log(error);
-            });
-        
+    var requestURl = "https://data-proxy.ebrains.eu/api/v1/buckets/" + bucketname + '/' + folder_name + "?inline=false&redirect=true";
+    // fetch list of files from bucket
 
-    }
+    fetch(url)
+        .then((resp) => resp.json())
+        .then(function (data) {
+            // get keys from data
+            data = data['objects'];
+            for (var i = 0; i < data.length; i++) {
+                var name = data[i]['name'];
+                var file_url = folder_url + '/' + name;
+                console.log(file_url)
+                // download file
+                split_name = name.split('/');
+                var file_name = split_name[split_name.length - 1];
+                console.log(file_name)
+                curl_and_save(file_url, file_name)
+                // convert image to dzi
+                image_to_dzi(file_name)
+                // convert dzi to tar
+                dzi_folder = file_name.split('.')[0] + '_files';
+                dzi_to_tar(dzi_folder);
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+
+}
 
 
 
@@ -164,7 +165,7 @@ function list_bucket_files(res, bucketname) {
     }).catch(function (error) {
         console.log(error);
     });
-    
+
 }
 
 
@@ -182,15 +183,15 @@ function get_token(code, res) {
         'code': code,
         'client_secret': process.env.CLIENT_SECRET,
         'redirect_uri': 'https://tif-dzi-tar-svc-test.apps.hbp.eu/app'
-        
+
     });
-  
+
     // make POST request to get token
     axios({
         method: 'post',
         url: target_url,
         data: params.toString(),
-        config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
+        config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     }).then(response => {
         console.log(response.data)
         // here i update the global variable token
@@ -201,7 +202,7 @@ function get_token(code, res) {
     }).catch(error => {
         console.log(error)
     });
-    
-    }
+
+}
 
 
